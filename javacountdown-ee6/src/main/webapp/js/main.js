@@ -1,5 +1,5 @@
 var rootURL = url + "/rest/version";
-var gdpData;
+var jdkAdoptionData;
 PluginDetect.getVersion(".");
 var version = PluginDetect.getVersion('Java');
 
@@ -14,6 +14,7 @@ $(function() {
  * 2.a Else inform the user we couldn't help 
  */
 function initialize() {
+
     var javaCCookie = $.cookie('javacountdown');
     if (typeof javaCCookie === 'undefined')
     {
@@ -32,19 +33,13 @@ function initialize() {
 
 
     // Callback for geolocation - logs java version incl lat long  
-    function logPosition(position)
-    {
-        console.log("position.coords.latitude" + position.coords.latitude);
-        var coord = position.coords.latitude + "," + position.coords.longitude;
-        console.log("coords" + coord);
+    function logPosition(position){
         log = new log(version, position.coords.latitude, position.coords.longitude);
         addLog(JSON.stringify(log));
-    }
-    ;
+    };
 
     // Error callback - displays errors.
-    function showError(error)
-    {
+    function showError(error){
         switch (error.code)
         {
             case error.PERMISSION_DENIED:
@@ -65,14 +60,14 @@ function initialize() {
 
     // http://jvectormap.com/maps/world/world/
     // fill the gdata object with series-values for the map.
-    gdpData = getData();
+    jdkAdoptionData = getData();
 
     // Get data from the rest backend
     function getData() {
-        var result;
+        var result="";
         $.ajax({
             url: rootURL,
-            type: 'get',
+            type: 'GET',
             async: false,
             dataType: 'json',
             success: function(dataWeGotViaJsonp) {
@@ -89,14 +84,14 @@ function initialize() {
     $('#map_canvas').vectorMap({
         map: 'world_en',
         backgroundColor: "#FFFFFF",
-       color: '#004066',
-       hoverColor: '#C8EEFF', 
-        values: gdpData,
+        color: '#004066',
+        hoverColor: '#C8EEFF', 
+        values: jdkAdoptionData,
         scaleColors: ['#C8EEFF', '#0071A4'],
-        normalizeFunction: 'polynomial',
-       
+        normalizeFunction: 'polynomial',     
         onLabelShow: function(e, el, code) {
-            el.html(el.html() + ' Java 7 Adoption - (' + gdpData[code] + ' %)');
+            total = jdkAdoptionData[code.toLowerCase()] ? jdkAdoptionData[code.toLowerCase()] : "0";
+            el.html(el.html() + ' Java 7 Adoption - (' + total + '%)');
         }
     });
 

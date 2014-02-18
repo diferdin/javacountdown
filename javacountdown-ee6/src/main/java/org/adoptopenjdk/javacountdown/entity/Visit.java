@@ -17,68 +17,63 @@ package org.adoptopenjdk.javacountdown.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import javax.enterprise.context.RequestScoped;
+import org.bson.types.ObjectId;
+
+import com.google.code.morphia.annotations.Entity;
+import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Reference;
 
 /**
- * Visitor class, represents an end user hitting a website with their Java
- * applet enabled event.
+ * Visit class, represents an end user hitting a website with their Java applet
+ * enabled event.
+ * 
+ * @author Alex Theedom
  */
-@Entity
+@RequestScoped
+@Entity(value = "visit", noClassnameStored = true)
 public class Visit implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    private String version;
-    private int vMajor;
-    private int vMinor;
-    private int vPatch;
-    private int vBuild;
-    private double latitude;
-    private double longitude;
-    private String country;
-    @Temporal(TemporalType.DATE)
-    @Column(name = "entered")
-    private Date time;
+    
+    private static final long serialVersionUID = -5580843065068184730L;
     @Id
-    @SequenceGenerator(name = "Visit_SEQ", allocationSize = 5, initialValue = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Visit_SEQ")
-    private Long id;
+    private ObjectId id;
+    private int version;
+    private VersionInfo versionInfo;
+    private String country;
+    @Reference
+    private GeoPosition geoPosition;
+    private String browser;
+    private String os;
+    private Date time;
 
-    /**
-     * Default public constructor for JPA
-     */
     public Visit() {
     }
+    
+    public boolean isVersion(int version){
+        return this.version == version;
+    }
 
-    public String getVersion() {
+    public GeoPosition getGeoPosition() {
+        return geoPosition;
+    }
+
+    public void setGeoPosition(GeoPosition geoPosition) {
+        this.geoPosition = geoPosition;
+    }
+
+    public int getVersion() {
         return this.version;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     /**
      * Return a clone of the time to follow thread-safe programming practices
-     *
+     * 
      * @return a clone of the time
      */
     public Date getTime() {
@@ -87,19 +82,11 @@ public class Visit implements Serializable {
 
     /**
      * Set a clone of the time to follow thread-safe programming practices
-     *
+     * 
      * @param time
      */
     public void setTime(Date time) {
         this.time = (Date) time.clone();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCountry() {
@@ -110,36 +97,28 @@ public class Visit implements Serializable {
         this.country = country;
     }
 
-    public int getvMajor() {
-        return vMajor;
+    public VersionInfo getVersionInfo() {
+        return versionInfo;
     }
 
-    public void setvMajor(int vMajor) {
-        this.vMajor = vMajor;
+    public void setVersionInfo(VersionInfo versionInfo) {
+        this.versionInfo = versionInfo;
     }
 
-    public int getvMinor() {
-        return vMinor;
+    public String getBrowser() {
+        return browser;
     }
 
-    public void setvMinor(int vMinor) {
-        this.vMinor = vMinor;
+    public void setBrowser(String browser) {
+        this.browser = browser;
     }
 
-    public int getvPatch() {
-        return vPatch;
+    public String getOs() {
+        return os;
     }
 
-    public void setvPatch(int vPatch) {
-        this.vPatch = vPatch;
-    }
-
-    public int getvBuild() {
-        return vBuild;
-    }
-
-    public void setvBuild(int vBuild) {
-        this.vBuild = vBuild;
+    public void setOs(String os) {
+        this.os = os;
     }
 
     @Override
@@ -158,12 +137,17 @@ public class Visit implements Serializable {
             return false;
         }
         final Visit other = (Visit) obj;
-        return this.id == other.id || (this.id != null && this.id.equals(other.id));
+        return this.id == other.id
+                || (this.id != null && this.id.equals(other.id));
     }
 
     @Override
     public String toString() {
-        return "Visit{" + "version=" + version + ", vMajor=" + vMajor + ", vMinor=" + vMinor + ", vPatch=" + vPatch + ", vBuild=" + vBuild + ", latitude=" + latitude + ", longitude=" + longitude + ", country=" + country + ", time=" + time + ", id=" + id + '}';
+        return "Visit [id=" + id + ", version=" + version + ", versionInfo="
+                + versionInfo + ", country=" + country + ", geoPosition="
+                + geoPosition + ", browser=" + browser + ", os=" + os
+                + ", time=" + time + "]";
     }
 
+    
 }

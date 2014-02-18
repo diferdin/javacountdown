@@ -15,7 +15,7 @@
  */
 package org.adoptopenjdk.javacountdown.boundary;
 
-import org.adoptopenjdk.javacountdown.entity.Visit;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -33,6 +33,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.WebApplicationException;
 import org.adoptopenjdk.javacountdown.control.DataProvider;
 import org.adoptopenjdk.javacountdown.control.ResultCache;
+import org.adoptopenjdk.javacountdown.control.VisitTransfer;
 
 /**
  * REST Web Service for the javacountdown website
@@ -42,6 +43,7 @@ import org.adoptopenjdk.javacountdown.control.ResultCache;
 public class VersionResource {
 
     private static final Logger logger = Logger.getLogger(VersionResource.class.getName());
+    
     @Inject
     private DataProvider dataProvider;
 
@@ -59,15 +61,15 @@ public class VersionResource {
     public Response log(String content) {
         logger.log(Level.FINE, "Client input: {0}", content);
 
-        Visit visit = null;
+        VisitTransfer visitTransfer = null;
         Gson gson = new Gson();
         try {
-            visit = gson.fromJson(content, Visit.class);
+            visitTransfer = gson.fromJson(content, VisitTransfer.class);
         } catch (JsonSyntaxException e) {
             // Deserialization went wrong
             throw new WebApplicationException(e, Response.status(Response.Status.BAD_REQUEST).build());
         }
-        dataProvider.persistVisit(visit);
+        dataProvider.persistVisit(visitTransfer);
         logger.log(Level.FINE, content);
         return Response.noContent().build();
     }
