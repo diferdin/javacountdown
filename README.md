@@ -1,14 +1,18 @@
-javacountdown.net
-=================
+jcountdown.com
+==============
 
-This GitHub repo serves as the source code for the upcoming javacountdown.net site built by the community that 
+This GitHub repo serves as the source code for jcountdown.com site built by the community that 
 mimics the spirit of ie6countdown.net. That is, to encourage users to move to the latest and greatest Java! 
 
 It's being built on Java 7 and Java EE6 and is hosted on [Jelastic](http://www.layershift.com/hosting/jelastic-cloud) by [Layershift](http://www.layershift.com/about/why-layershift).
 
 ---
 
-As well as the map with global percentages, a simple message will be shown to users:
+See the [Wiki](https://github.com/AdoptOpenJDK/javacountdown/wiki) on how to get started as a developer and other useful information.
+
+---
+
+As well as the map with global percentages, a simple message will be shown to users similar to the following::
 
 *"15 years ago an amazing language was born. Its name was Java. Now that we’re in 2013, the world has changed and 
 Java along with it! For Java versions 4, 5 and 6, it’s time to say goodbye.*
@@ -17,7 +21,7 @@ Java along with it! For Java versions 4, 5 and 6, it’s time to say goodbye.*
 than 1% worldwide, so hundreds of millions of users are safer and 9-10 million developers 
 are more productive.*
 
-*Move to Java 7 today!"*
+*Move to the latest version of Java 7 today!"*
 
 An addendum for some enterprises will also be displayed:
 
